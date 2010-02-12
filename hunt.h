@@ -5,9 +5,6 @@
 
 #define NAME_LEN      16
 
-WINDOW* status_win;
-WINDOW* maze_win;
-
 typedef struct player {
   char name[NAME_LEN];
   int x;
