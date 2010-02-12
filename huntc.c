@@ -47,7 +47,7 @@ void show_commands() {
 
 void redraw_status(WINDOW* status_win) {
   mvwaddstr(status_win,0,0,"Name: ");
-  mvwaddstr(status_win,0,6,PLAYER.name);
+  mvwaddstr(status_win,1,1,PLAYER.name);
   mvwaddstr(status_win,20,0,"Press '?'");
   mvwaddstr(status_win,21,0," for commands");
 }
