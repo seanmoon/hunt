@@ -31,8 +31,8 @@ void setup_player() {
   noecho();
 
   /* set position */
-  PLAYER.x = 1; /* begin in top left corner */
-  PLAYER.y = 1; /*                          */
+  PLAYER.x = 0; /* begin in top left corner */
+  PLAYER.y = 0; /*                          */
 }
 
 void show_commands() {
@@ -41,7 +41,7 @@ void show_commands() {
 
 void redraw_status(WINDOW* status_win) {
   mvwaddstr(status_win,0,0,"Name: ");
-  mvwaddstr(status_win,6,0,PLAYER.name);
+  mvwaddstr(status_win,0,6,PLAYER.name);
 }
 void redraw() {
 	redraw_maze(maze_win);
