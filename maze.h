@@ -2,8 +2,8 @@
 #define HUNT__MAZE_H
 
 #include <curses.h>
-#define MAZEHEIGHT  20
-#define MAZEWIDTH   64
+#define MAZEHEIGHT  19
+#define MAZEWIDTH   63
 
 typedef struct cell {
 	int is_wall : 1;
