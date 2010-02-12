@@ -2,6 +2,7 @@
 #include <curses.h>
 
 #include "hunt.h"
+#include "huntc.h"
 
 player_t PLAYER;
 
@@ -34,7 +35,7 @@ void play_game() {
   
   char ch;
 
-  while ( redraw_maze(), ch = getch() ) {
+  while ( redraw_maze(maze_win), ch = getch() ) {
     switch (ch) {
       case 'q':
         goto end_game;
