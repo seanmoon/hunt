@@ -16,6 +16,9 @@ void init_hunt() {
   keypad(stdscr,true);
   noecho();
   nodelay(NULL,true);
+	start_color();
+	init_pair(COLOR_PLAYER, COLOR_GREEN, COLOR_BLACK);
+	init_pair(COLOR_MAZE, COLOR_WHITE, COLOR_BLACK);
 
   /* intialize windows */
   status_win  = newwin(STATUS_WIN_HEIGHT,STATUS_WIN_WIDTH,

@@ -28,7 +28,7 @@ void make_random_maze() {
 	nfilled--;
 	
 	int repos = 0;
-	while (nfilled > 1) {
+	while (nfilled > 0) {
 /*		PLAYER.x = x;
 		PLAYER.y = y;	
 		redraw_maze(stdscr);
@@ -88,14 +88,14 @@ void init_maze() {
 void redraw_maze(WINDOW* win) {
 	int i,j;
 	for ( j = -1; j < MAZEHEIGHT + 1; j++ ) {
-		mvwaddch(win,j+1,0,ACS_BLOCK);
+		mvwaddch(win,j+1,0, ' ' | A_REVERSE | COLOR_PAIR(COLOR_MAZE));
 		for ( i = 0; i < MAZEWIDTH; i++ ) {
 			if (j >= 0 && j < MAZEHEIGHT)
-				waddch(win, MAZE[i][j].is_wall ?ACS_BLOCK:' ');
+				waddch(win, ' ' |  (MAZE[i][j].is_wall ? A_REVERSE : 0) | COLOR_PAIR(COLOR_MAZE));
 			else
-				waddch(win, ACS_BLOCK);
+				waddch(win, ' ' | A_REVERSE | COLOR_PAIR(COLOR_MAZE));
 		}
-		waddch(win,ACS_BLOCK);
+		waddch(win, ' ' | A_REVERSE | COLOR_PAIR(COLOR_MAZE));
 	}
-	mvwaddch(win,PLAYER.y + 1, PLAYER.x + 1, '@');
+	mvwaddch(win,PLAYER.y + 1, PLAYER.x + 1, '@' | COLOR_PAIR(COLOR_PLAYER));
 }	

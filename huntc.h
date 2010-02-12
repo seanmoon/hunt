@@ -15,6 +15,9 @@
 #define MESSAGE_WIN_YSTART  22 
 #define MESSAGE_WIN_XSTART   0
 
+#define COLOR_PLAYER 1
+#define COLOR_MAZE 2
+
 WINDOW* status_win;
 WINDOW* maze_win;
 WINDOW* message_win;
