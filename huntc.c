@@ -48,8 +48,7 @@ void setup_player() {
 
 void show_commands() {
   wclear(message_win);
-  mvwaddstr(message_win,0,0,"Commands: q=quit i=up j=left k=down l=right");
-  mvwaddstr(message_win,1,0," shift+direction: face direction           ");
+  mvwaddstr(message_win,0,0,"Commands: q=quit arrow-keys=movement");
 }
 
 void redraw_status(WINDOW* status_win) {
@@ -116,23 +115,6 @@ void move_player(int direction) {
   } 
 }
 
-void face_direction(int direction) {
-  switch (direction) {
-    case 'I':
-      PLAYER.direction = DIRECTION_UP;
-      break;
-    case 'J':
-      PLAYER.direction = DIRECTION_LEFT;
-      break;
-    case 'K':
-      PLAYER.direction = DIRECTION_DOWN;
-      break;
-    case 'L':
-      PLAYER.direction = DIRECTION_RIGHT;
-      break;
-  } 
-}
-
 void play_game() {
   
   int ch;
@@ -141,26 +123,17 @@ void play_game() {
     switch (ch) {
       case 'q':
         goto end_game;
-      case 'i':
-      case 'j':
-      case 'k':
-      case 'l':
       case KEY_UP:
       case KEY_DOWN:
       case KEY_LEFT:
       case KEY_RIGHT:
         move_player(ch);
         break;
-      case 'I':
-      case 'J':
-      case 'K':
-      case 'L':
-        face_direction(ch);
-        break;
       case '?':
         show_commands();
         break;
       default:
+        wclear(message_win);
         mvwaddstr(message_win,0,0,"Unknown command ");
         waddch(message_win,ch);
     }
