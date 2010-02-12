@@ -39,6 +39,7 @@ void setup_player() {
   PLAYER.x = 0; /* begin in top left corner */
   PLAYER.y = 0; /*                          */
   PLAYER.direction = DIRECTION_RIGHT;
+
 }
 
 void show_commands() {
