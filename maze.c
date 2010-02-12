@@ -1,5 +1,7 @@
 #include <curses.h>
-#include "hunt.h"
+#include "huntc.h"
+
+extern player_t PLAYER;
 
 void make_random_maze() {
 }
@@ -22,8 +24,9 @@ void redraw_maze(WINDOW* win) {
 			if (j >= 0 && j < MAZEHEIGHT)
 				waddch(win, MAZE[i][j].is_wall ?'#':' ');
 			else
-				waddch(win, '@');
+				waddch(win, '#');
 		}
 		waddch(win,'#');
 	}
+	mvwaddch(win,PLAYER.x + 1, PLAYER.y + 1, '@');
 }	
