@@ -38,6 +38,11 @@ void show_commands() {
   mvaddstr(24,0,"Commands: q=quit");
 }
 
+void redraw_status(WINDOW* status_win) {
+  mvwaddstr(status_win,0,0,"Name: ");
+  mvwaddstr(status_win,6,0,PLAYER.name);
+}
+
 void play_game() {
   
   char ch;
@@ -57,11 +62,6 @@ void play_game() {
 
 end_game:
   return;
-}
-
-void redraw_status(WINDOW* status_window) {
-  
-  
 }
 
 int main(int argc, const char* argv[]){
