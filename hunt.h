@@ -1,12 +1,4 @@
-#define MAZEHEIGHT    20
-#define MAZEWIDTH     64
-#define MAZEXSTART     0
-#define MAZEYSTART     0
-
-#define STATUSHEIGHT  20
-#define STATUSWIDTH   15
-#define STATUSXSTART   0
-#define STATUSYSTART  65
+#include "maze.h"
 
 #define NAME_LEN      16
 
@@ -18,5 +10,3 @@ typedef struct player {
   int x;
   int y;
 } player_t;
-
-char MAZE[MAZEHEIGHT][MAZEWIDTH];

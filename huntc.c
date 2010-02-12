@@ -34,7 +34,7 @@ void play_game() {
   
   char ch;
 
-  while ( ch = getch() ) {
+  while ( redraw_maze(), ch = getch() ) {
     switch (ch) {
       case 'q':
         goto end_game;
