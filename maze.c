@@ -5,7 +5,10 @@ void redraw_maze(WINDOW* win) {
 	for ( j = -1; j < MAZEHEIGHT + 1; j++ ) {
 		mvwaddch(win,j+1,0,'#');
 		for ( i = 0; i < MAZEWIDTH; i++ ) {
-			waddch(win, (j < 0 || j == MAZEHEIGHT || MAZE[i][j].is_wall) ?'#':' ');
+			if (j >= 0 && j < MAZEHEIGHT)
+				waddch(win, MAZE[i][j].is_wall ?'#':' ');
+			else
+				waddch(win, '@');
 		}
 		waddch(win,'#');
 	}
