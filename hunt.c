@@ -1,8 +1,13 @@
+#include <stdlib.h>
 #include <curses.h>
 
-void init_hunt() {
 
-   
+void init_hunt() {
+    
+  /* curses magic */
+  atexit((void(*)(void))endwin);
+  initscr();
+
 }
 
 
