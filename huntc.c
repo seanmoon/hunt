@@ -19,7 +19,8 @@ void init_hunt() {
                       STATUS_WIN_YSTART,STATUS_WIN_XSTART);
   maze_win   = newwin(MAZE_WIN_HEIGHT,MAZE_WIN_WIDTH,
                       MAZE_WIN_YSTART,MAZE_WIN_XSTART);
-
+  
+  init_maze();
 }
 
 void setup_player() {
