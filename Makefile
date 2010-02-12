@@ -1,10 +1,19 @@
-all:	huntc huntd
+BINS = bin/huntc bin/huntd
 
-huntc:
-	cc huntc.c -lcurses -o bin/huntc
+all:	$(BINS)
 
-huntd:
-	cc huntd.c -o bin/huntd
+
+bin/huntc: LDFLAGS=-lcurses
+
+bin objs:
+	mkdir $@
+
+bin/%: objs/%.o | bin
+	$(CC) -o $@ $< $(CFLAGS) $(LDFLAGS)
+
+objs/%.o: %.c | objs
+	$(CC) -c -o $@ $< $(CFLAGS)
 
 clean:
-	rm bin/*
+	-rm $(BINS)
+	-rm objs/*
