@@ -46,6 +46,9 @@ void redraw_status(WINDOW* status_win) {
 void redraw() {
 	redraw_maze(maze_win);
 	redraw_status(status_win);
+	wnoutrefresh(maze_win);
+	wnoutrefresh(status_win);
+	doupdate();
 }
 
 void play_game() {
