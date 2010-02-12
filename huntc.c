@@ -9,20 +9,53 @@ void init_hunt() {
   /* curses magic */
   atexit((void(*)(void))endwin);
   initscr();
+  noecho();
+  nodelay(NULL,true);
 }
 
 void setup_player() {
 
-  printf("Enter your codename: ");
-  scanf("%s", PLAYER.name);
+  /* get name */
+  echo();
+  mvaddstr(0,0,"Enter your codename: ");
+  getnstr(PLAYER.name,NAME_LEN);
+  noecho();
 
+  /* set position */
   PLAYER.x = 1; /* begin in top left corner */
   PLAYER.y = 1; /*                          */
 }
 
-int main(int argc, const char* argv[]){
+void show_commands() {
+  mvaddstr(24,0,"Commands: q=quit");
+}
+
+void play_game() {
   
+  char ch;
+
+  while ( ch = getch() ) {
+    switch (ch) {
+      case 'q':
+        goto end_game;
+      case '?':
+        show_commands();
+        break;
+      default:
+        mvaddstr(24,0,"Unknown command ");
+        addch(ch);
+    }
+  }
+
+end_game:
+  return;
+}
+
+int main(int argc, const char* argv[]){
+ 
+  init_hunt();
   setup_player();
+  play_game();
 
   return 0;
 }
