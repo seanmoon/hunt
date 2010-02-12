@@ -4,7 +4,7 @@ all:	$(BINS)
 
 
 bin/huntc: LDFLAGS=-lcurses
-bin/huntc: maze.o
+bin/huntc: objs/maze.o
 
 bin objs:
 	mkdir $@
