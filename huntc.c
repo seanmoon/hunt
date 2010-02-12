@@ -12,6 +12,13 @@ void init_hunt() {
   initscr();
   noecho();
   nodelay(NULL,true);
+
+  /* intialize windows */
+  status_win = newwin(STATUS_WIN_HEIGHT,STATUS_WIN_WIDTH,
+                      STATUS_WIN_YSTART,STATUS_WIN_XSTART);
+  maze_win   = newwin(MAZE_WIN_HEIGHT,MAZE_WIN_WIDTH,
+                      MAZE_WIN_YSTART,MAZE_WIN_XSTART);
+
 }
 
 void setup_player() {
@@ -50,6 +57,11 @@ void play_game() {
 
 end_game:
   return;
+}
+
+void redraw_status(WINDOW* status_window) {
+  
+  
 }
 
 int main(int argc, const char* argv[]){
