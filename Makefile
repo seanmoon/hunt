@@ -1,4 +1,4 @@
-BINS = bin/huntc bin/huntd
+BINS = bin/huntc 
 
 all:	$(BINS)
 

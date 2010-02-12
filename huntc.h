@@ -10,9 +10,9 @@
 #define STATUS_WIN_WIDTH    13
 #define STATUS_WIN_YSTART    0
 #define STATUS_WIN_XSTART   67
-#define MESSAGE_WIN_HEIGHT   1
+#define MESSAGE_WIN_HEIGHT   2
 #define MESSAGE_WIN_WIDTH   80
-#define MESSAGE_WIN_YSTART  23 
+#define MESSAGE_WIN_YSTART  22 
 #define MESSAGE_WIN_XSTART   0
 
 WINDOW* status_win;
