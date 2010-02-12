@@ -6,3 +6,4 @@ typedef struct cell {
 } cell_t;
 
 cell_t MAZE[MAZEHEIGHT][MAZEWIDTH];
+void redraw_maze(void);
