@@ -1,0 +1,4 @@
+#define MAZEHEIGHT  20
+#define MAZEWIDTH   64
+
+char MAZE[MAZEHEIGHT][MAZEWIDTH];

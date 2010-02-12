@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <curses.h>
 
+#include "hunt.h"
 
 void init_hunt() {
     
