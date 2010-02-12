@@ -7,7 +7,6 @@ CFLAGS = -Wall -g
 
 bin/huntc: LDFLAGS=-lcurses
 bin/huntc: objs/maze.o objs/huntc.o
-bin/huntd: objs/huntd.o
 
 bin objs:
 	mkdir $@
