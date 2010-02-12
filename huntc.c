@@ -12,8 +12,12 @@ void init_hunt() {
 }
 
 void setup_player() {
+
   printf("Enter your codename: ");
   scanf("%s", PLAYER.name);
+
+  PLAYER.x = 1; /* begin in top left corner */
+  PLAYER.y = 1; /*                          */
 }
 
 int main(int argc, const char* argv[]){
