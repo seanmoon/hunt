@@ -1,3 +1,4 @@
+/* vim:set sw=2 ts=2 : */
 #include <stdlib.h>
 #include <curses.h>
 
@@ -42,12 +43,16 @@ void redraw_status(WINDOW* status_win) {
   mvwaddstr(status_win,0,0,"Name: ");
   mvwaddstr(status_win,6,0,PLAYER.name);
 }
+void redraw() {
+	redraw_maze(maze_win);
+	redraw_status(status_win);
+}
 
 void play_game() {
   
   char ch;
 
-  while ( redraw_maze(maze_win), ch = getch() ) {
+  while (redraw(), ch = getch() ) {
     switch (ch) {
       case 'q':
         goto end_game;
