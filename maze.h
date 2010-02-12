@@ -11,5 +11,6 @@ typedef struct cell {
 
 cell_t MAZE[MAZEWIDTH][MAZEHEIGHT];
 void redraw_maze(WINDOW* window);
+void init_maze();
 
 #endif

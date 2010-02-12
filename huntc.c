@@ -4,6 +4,7 @@
 
 #include "hunt.h"
 #include "huntc.h"
+#include "maze.h"
 
 player_t PLAYER;
 
