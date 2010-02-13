@@ -16,7 +16,8 @@
 #define MESSAGE_WIN_XSTART   0
 
 #define COLOR_PLAYER 1
-#define COLOR_MAZE 2
+#define COLOR_MAZE   2
+#define COLOR_GOAL   3
 
 WINDOW* status_win;
 WINDOW* maze_win;

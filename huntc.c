@@ -1,5 +1,6 @@
 /* vim:set sw=2 ts=2 : */
 #include <stdlib.h>
+#include <unistd.h>
 #include <curses.h>
 
 #include "hunt.h"
@@ -19,6 +20,7 @@ void init_hunt() {
 	start_color();
 	init_pair(COLOR_PLAYER, COLOR_GREEN, COLOR_BLACK);
 	init_pair(COLOR_MAZE, COLOR_WHITE, COLOR_BLACK);
+	init_pair(COLOR_GOAL, COLOR_RED, COLOR_BLACK);
 
   /* intialize windows */
   status_win  = newwin(STATUS_WIN_HEIGHT,STATUS_WIN_WIDTH,
@@ -35,14 +37,14 @@ void setup_player() {
 
   /* get name */
   echo();
-  mvaddstr(0,0,"Enter your codename: ");
+  mvaddstr(0,0,"Enter your code name: ");
   getnstr(PLAYER.name,NAME_LEN);
   noecho();
 
   /* set position */
   PLAYER.x = 0; /* begin in top left corner */
-  PLAYER.y = 0; /*                          */
-  PLAYER.direction = DIRECTION_RIGHT;
+  PLAYER.y = 0; 
+  PLAYER.level = 1;
 
 }
 
@@ -54,6 +56,8 @@ void show_commands() {
 void redraw_status(WINDOW* status_win) {
   mvwaddstr(status_win,0,0,"Name: ");
   mvwaddstr(status_win,1,1,PLAYER.name);
+  mvwaddstr(status_win,3,0,"Level: ");
+  mvwprintw(status_win,4,1,"%d",PLAYER.level);
   mvwaddstr(status_win,19,0,"Press '?'");
   mvwaddstr(status_win,20,0," for commands");
 }
@@ -115,11 +119,36 @@ void move_player(int direction) {
   } 
 }
 
+int check_victory () {
+  if (PLAYER.x+1 == MAZEWIDTH && PLAYER.y+1 == MAZEHEIGHT)
+    return 0; 
+  else
+    return -1;
+}
+
+void next_level() {
+
+  /* report victory */
+  wclear(message_win);
+  mvwaddstr(message_win,0,0,"VICTORY IS YOURS");
+  mvwaddstr(message_win,1,0," press a key to continue...");
+  redraw();
+  getch();
+  wclear(message_win);
+  
+  /* set up next level */
+  PLAYER.x = 0;
+  PLAYER.y = 0; 
+  PLAYER.level++;
+  init_maze();
+}
+
 void play_game() {
   
   int ch;
 
   while (redraw(), ch = getch() ) {
+    
     switch (ch) {
       case 'q':
         goto end_game;
@@ -137,6 +166,10 @@ void play_game() {
         mvwaddstr(message_win,0,0,"Unknown command ");
         waddch(message_win,ch);
     }
+
+    if ( check_victory() == 0 ) 
+      next_level();
+
   }
 
 end_game:

@@ -13,7 +13,7 @@ typedef struct player {
   char name[NAME_LEN];
   int x;
   int y;
-  int direction;
+  int level;
 } player_t;
 
 #endif
