@@ -15,6 +15,7 @@ void init_hunt() {
   initscr();
   cbreak();
   keypad(stdscr,true);
+  curs_set(0); /* make cursor invisible */
   noecho();
   nodelay(NULL,true);
 	start_color();
