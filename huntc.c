@@ -71,6 +71,11 @@ void redraw() {
 	doupdate();
 }
 
+void refresh_win(WINDOW* win) {
+	wnoutrefresh(win);
+	doupdate();
+}
+
 int try_move(int dx,int dy) {
   
   /* sanity check */
@@ -92,17 +97,16 @@ int try_move(int dx,int dy) {
   return 0;
 }
 
-void move_player(int direction) {
-  
-  if ( direction == 'i' ) 
-    direction = KEY_UP;
-  else if ( direction == 'j' )
-    direction = KEY_LEFT;
-  else if ( direction == 'k' )
-    direction = KEY_DOWN;
-  else if ( direction == 'l' )
-    direction = KEY_RIGHT;
+void shoot (int direction) {
+  /* report shooting in status */
+  wclear(message_win);
+  mvwaddstr(message_win,0,0,"kapow!");
 
+  /* TODO: do shooting logic */
+  /* TODO: draw shot to screen */
+}
+
+void move_player(int direction) {
   switch (direction) {
     case KEY_UP:
       try_move(0,-1);
@@ -157,6 +161,12 @@ void play_game() {
       case KEY_LEFT:
       case KEY_RIGHT:
         move_player(ch);
+        break;
+      case 'w':
+      case 'a':
+      case 's':
+      case 'd':
+        shoot(ch);
         break;
       case '?':
         show_commands();
