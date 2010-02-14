@@ -21,10 +21,12 @@ typedef struct physics_obj {
   phys_object_type_t type;
   int x;
   int y;
+  int dx, dy;
   char display_char;
 } physics_obj_t;
 
-void new_bullet(int x, int y); /* automatically inserted into update physics list */
+void new_bullet(int x, int y, int dx, int dy);
+gboolean bullet_update(physics_obj_t *obj);
 cell_t MAZE[MAZEWIDTH][MAZEHEIGHT];
 void redraw_maze(WINDOW* window);
 void init_maze();

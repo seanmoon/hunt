@@ -105,12 +105,35 @@ int try_move(int dx,int dy) {
 }
 
 void shoot (int direction) {
+
+  int dx,dy;
+
   /* report shooting in status */
   wclear(message_win);
   mvwaddstr(message_win,0,0,"kapow!");
 
   /* TODO: do shooting logic */
+
   /* TODO: draw shot to screen */
+  switch (direction) {
+    case 'w':
+      dx = 0;
+      dy = -1;
+      break;
+    case 's':
+      dx = 0;
+      dy = 1;
+      break;
+    case 'a':
+      dx = -1;
+      dy = 0;
+      break;
+    case 'd':
+      dx = 1;
+      dy = 0;
+      break;
+  }
+  new_bullet(PLAYER.x,PLAYER.y,dx,dy);
 }
 
 void move_player(int direction) {

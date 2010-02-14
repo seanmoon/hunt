@@ -7,13 +7,34 @@
 
 extern player_t PLAYER;
 
-void new_bullet(int x, int y) {
+void new_bullet(int x, int y, int dx, int dy) {
   physics_obj_t* bullet = g_new(physics_obj_t,1);
   bullet->x = x;
   bullet->y = y;
+  bullet->dx = dx;
+  bullet->dy = dy;
+
   bullet->display_char = '.';
   bullet->type = PO_BULLET;
   g_sequence_append(physics_objects,bullet);
+}
+
+
+gboolean bullet_update(physics_obj_t *obj) {
+  obj->x += obj->dx;
+  obj->y += obj->dy;
+  
+  if (MAZE[obj->x][obj->y].is_wall ) {
+    MAZE[obj->x][obj->y].is_wall = 0;
+    return FALSE; /* we are done with this obj */
+  } 
+
+  if (obj->x > MAZEWIDTH || obj->x < 0) 
+    return FALSE;
+  if (obj->y > MAZEHEIGHT || obj->y < 0)
+    return FALSE;
+
+  return TRUE;
 }
 
 void make_random_maze() {
@@ -114,18 +135,30 @@ void redraw_maze(WINDOW* win) {
 		}
 		waddch(win, ' ' | A_REVERSE | COLOR_PAIR(COLOR_MAZE));
 	}
-
-  /* draw game objects */ 
-	mvwaddch(win,MAZEHEIGHT,MAZEWIDTH, 'X' | COLOR_PAIR(COLOR_GOAL));
-	mvwaddch(win,PLAYER.y + 1, PLAYER.x + 1, '@' | COLOR_PAIR(COLOR_PLAYER));
-
+  
   /* draw physics objects */ 
   for (it  = g_sequence_get_begin_iter(physics_objects) ;
        !g_sequence_iter_is_end(it) ;
        it  = g_sequence_iter_next(it) ) {
     physics_obj_t *obj = g_sequence_get(it);
-    mvwaddch(win,obj->x,obj->y,obj->display_char | COLOR_PAIR(COLOR_POBJ));
+    switch (obj->type) {
+      case PO_BULLET:
+        if ( !bullet_update(obj) ) {
+          g_sequence_remove(it);
+          g_free(obj);
+          continue;
+        }
+        break;
+      default:
+        g_warn_if_reached();
+      }
+    mvwaddch(win,obj->y+1,obj->x+1,obj->display_char | COLOR_PAIR(COLOR_POBJ));
   }
+
+  /* draw game objects */ 
+	mvwaddch(win,MAZEHEIGHT,MAZEWIDTH, 'X' | COLOR_PAIR(COLOR_GOAL));
+	mvwaddch(win,PLAYER.y + 1, PLAYER.x + 1, '@' | COLOR_PAIR(COLOR_PLAYER));
+
   
 
 }	
