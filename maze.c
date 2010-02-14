@@ -95,7 +95,6 @@ void make_random_maze() {
 void init_maze() {
   physics_objects = g_sequence_new(NULL);
   make_random_maze();
-  new_bullet(3,3); /* TODO: remove this */
 }
 
 void redraw_maze(WINDOW* win) {
