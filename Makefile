@@ -4,8 +4,10 @@ all:	$(BINS)
 
 CFLAGS = -Wall -g
 
+PKG_LIBS = glib-2.0
 
-bin/huntc: LDFLAGS=-lcurses
+bin/huntc: LDFLAGS+=-lcurses -lev `pkg-config --libs $(PKG_LIBS)`
+bin/huntc: CFLAGS+=`pkg-config --cflags $(PKG_LIBS)`
 bin/huntc: objs/maze.o objs/huntc.o
 
 bin objs:

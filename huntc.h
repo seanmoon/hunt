@@ -18,6 +18,7 @@
 #define COLOR_PLAYER 1
 #define COLOR_MAZE   2
 #define COLOR_GOAL   3
+#define COLOR_POBJ   4
 
 WINDOW* status_win;
 WINDOW* maze_win;

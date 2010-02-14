@@ -2,12 +2,17 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <curses.h>
+#include <ev.h>
 
 #include "hunt.h"
 #include "huntc.h"
 #include "maze.h"
 
 player_t PLAYER;
+ev_timer timeout_watcher;
+ev_io    stdin_watcher;
+struct ev_loop *loop; 
+
 
 void init_hunt() {
   /* curses magic */
@@ -22,6 +27,7 @@ void init_hunt() {
 	init_pair(COLOR_PLAYER, COLOR_GREEN, COLOR_BLACK);
 	init_pair(COLOR_MAZE, COLOR_WHITE, COLOR_BLACK);
 	init_pair(COLOR_GOAL, COLOR_RED, COLOR_BLACK);
+	init_pair(COLOR_POBJ, COLOR_YELLOW, COLOR_BLACK);
 
   /* intialize windows */
   status_win  = newwin(STATUS_WIN_HEIGHT,STATUS_WIN_WIDTH,
@@ -148,50 +154,66 @@ void next_level() {
   init_maze();
 }
 
-void play_game() {
+
+
+static void timeout_cb (EV_P_ ev_timer *w, int revents) {
+  redraw();
+}
+
+static void stdin_cb (EV_P_ ev_io *w, int revents) {
   
   int ch;
 
-  while (redraw(), ch = getch() ) {
+  ch = getch();
     
-    switch (ch) {
-      case 'q':
-        goto end_game;
-      case KEY_UP:
-      case KEY_DOWN:
-      case KEY_LEFT:
-      case KEY_RIGHT:
-        move_player(ch);
-        break;
-      case 'w':
-      case 'a':
-      case 's':
-      case 'd':
-        shoot(ch);
-        break;
-      case '?':
-        show_commands();
-        break;
-      default:
-        wclear(message_win);
-        mvwaddstr(message_win,0,0,"Unknown command ");
-        waddch(message_win,ch);
-    }
-
-    if ( check_victory() == 0 ) 
-      next_level();
-
+  switch (ch) {
+    case 'q':
+      ev_unloop(loop,EVUNLOOP_ALL);
+      ev_io_stop (EV_A_ w);
+      ev_unloop (EV_A_ EVUNLOOP_ALL);
+      return;
+    case KEY_UP:
+    case KEY_DOWN:
+    case KEY_LEFT:
+    case KEY_RIGHT:
+      move_player(ch);
+      break;
+    case 'w':
+    case 'a':
+    case 's':
+    case 'd':
+      shoot(ch);
+      break;
+    case '?':
+      show_commands();
+      break;
+    default:
+      wclear(message_win);
+      mvwaddstr(message_win,0,0,"Unknown command ");
+      waddch(message_win,ch);
   }
 
-end_game:
-  return;
+  if ( check_victory() == 0 ) 
+    next_level();
+
 }
 
+
 int main(int argc, const char* argv[]){
- 
+  
+  /* ev setup code */
+  loop = ev_default_loop (0);
+  ev_timer_init(&timeout_watcher, timeout_cb, 0.1, 0.1); /* redraw every 1/10 sec */
+  ev_timer_start(loop, &timeout_watcher);
+  ev_io_init (&stdin_watcher, stdin_cb, 0, EV_READ);
+  ev_io_start (loop, &stdin_watcher);
+
+  /* hunt stuff */
   init_hunt();
   setup_player();
-  play_game();
+
+  /* start game loop */
+  ev_loop (loop, 0);
 
   return 0;
 }

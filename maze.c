@@ -1,9 +1,20 @@
 /* vim:set sw=2 ts=2 : */
 #include <curses.h>
 #include <stdlib.h>
+#include <glib.h>
 #include "huntc.h"
+#include "maze.h"
 
 extern player_t PLAYER;
+
+void new_bullet(int x, int y) {
+  physics_obj_t* bullet = g_new(physics_obj_t,1);
+  bullet->x = x;
+  bullet->y = y;
+  bullet->display_char = '.';
+  bullet->type = PO_BULLET;
+  g_sequence_append(physics_objects,bullet);
+}
 
 void make_random_maze() {
   int x,y, dx, dy;
@@ -82,11 +93,16 @@ void make_random_maze() {
 }
 
 void init_maze() {
+  physics_objects = g_sequence_new(NULL);
   make_random_maze();
+  new_bullet(3,3); /* TODO: remove this */
 }
 
 void redraw_maze(WINDOW* win) {
 	int i,j;
+  GSequenceIter* it;
+
+  /* redraw the walls */
 	for ( j = -1; j < MAZEHEIGHT + 1; j++ ) {
 		mvwaddch(win,j+1,0, ' ' | A_REVERSE | COLOR_PAIR(COLOR_MAZE));
 		for ( i = 0; i < MAZEWIDTH; i++ ) {
@@ -99,6 +115,18 @@ void redraw_maze(WINDOW* win) {
 		}
 		waddch(win, ' ' | A_REVERSE | COLOR_PAIR(COLOR_MAZE));
 	}
+
+  /* draw game objects */ 
 	mvwaddch(win,MAZEHEIGHT,MAZEWIDTH, 'X' | COLOR_PAIR(COLOR_GOAL));
 	mvwaddch(win,PLAYER.y + 1, PLAYER.x + 1, '@' | COLOR_PAIR(COLOR_PLAYER));
+
+  /* draw physics objects */ 
+  for (it  = g_sequence_get_begin_iter(physics_objects) ;
+       !g_sequence_iter_is_end(it) ;
+       it  = g_sequence_iter_next(it) ) {
+    physics_obj_t *obj = g_sequence_get(it);
+    mvwaddch(win,obj->x,obj->y,obj->display_char | COLOR_PAIR(COLOR_POBJ));
+  }
+  
+
 }	
