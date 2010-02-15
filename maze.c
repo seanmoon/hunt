@@ -8,9 +8,24 @@
 extern player_t PLAYER;
 
 void new_bullet(int x, int y, int dx, int dy) {
-  physics_obj_t* bullet = g_new(physics_obj_t,1);
+  
+  GSequenceIter* it;
+  physics_obj_t* bullet;
+
+  /* dont make it if we have a bullet in this position already */
+  for (it  = g_sequence_get_begin_iter(physics_objects) ;
+       !g_sequence_iter_is_end(it) ;
+       it  = g_sequence_iter_next(it) ) {
+    physics_obj_t *obj = g_sequence_get(it);
+    if (x == obj->x && y == obj->y) 
+      return;
+  }
+
+  bullet = g_new(physics_obj_t,1);
+  
   bullet->x = x;
   bullet->y = y;
+
   bullet->dx = dx;
   bullet->dy = dy;
 
