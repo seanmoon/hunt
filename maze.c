@@ -21,35 +21,39 @@ void new_bullet(int x, int y, int dx, int dy) {
       return;
   }
 
+  /* OK, lets make a bullet! */
   bullet = g_new(physics_obj_t,1);
   
   bullet->x = x;
   bullet->y = y;
-
   bullet->dx = dx;
   bullet->dy = dy;
-
   bullet->display_char = '.';
   bullet->type = PO_BULLET;
+
   g_sequence_append(physics_objects,bullet);
 }
 
 
 gboolean bullet_update(physics_obj_t *obj) {
+
+  /* move */
   obj->x += obj->dx;
   obj->y += obj->dy;
   
+  /* wall collision check */
   if (MAZE[obj->x][obj->y].is_wall ) {
     MAZE[obj->x][obj->y].is_wall = 0;
     return FALSE; /* we are done with this obj */
   } 
 
-  if (obj->x > MAZEWIDTH || obj->x < 0) 
+  /* off screen check */
+  if (obj->x >=  MAZEWIDTH || obj->x < 0) 
     return FALSE;
-  if (obj->y > MAZEHEIGHT || obj->y < 0)
+  if (obj->y >= MAZEHEIGHT || obj->y < 0)
     return FALSE;
 
-  return TRUE;
+  return TRUE; /* bullet survives */
 }
 
 void make_random_maze() {
@@ -173,7 +177,5 @@ void redraw_maze(WINDOW* win) {
   /* draw game objects */ 
 	mvwaddch(win,MAZEHEIGHT,MAZEWIDTH, 'X' | COLOR_PAIR(COLOR_GOAL));
 	mvwaddch(win,PLAYER.y + 1, PLAYER.x + 1, '@' | COLOR_PAIR(COLOR_PLAYER));
-
-  
 
 }	
